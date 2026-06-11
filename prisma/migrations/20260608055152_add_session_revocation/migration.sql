@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "session" ADD COLUMN     "lastUsedAt" TIMESTAMP(3),
+ADD COLUMN     "revokedAt" TIMESTAMP(3),
+ALTER COLUMN "createdAt" SET DEFAULT CURRENT_TIMESTAMP;

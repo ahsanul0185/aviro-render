@@ -1,0 +1,50 @@
+model User {
+    id                 String     @default(uuid()) @id
+    username           String     @unique
+    firstName          String
+    lastName           String
+    email              String
+    emailVerified      Boolean    @default(false)
+    status             UserStatus @default(ACTIVE)
+    needPasswordChange Boolean    @default(false)
+    profilePicture     String?
+    phone              String?
+    password           String
+    isDeleted          Boolean    @default(false)
+    deletedAt          DateTime?
+    createdAt          DateTime   @default(now())
+    updatedAt          DateTime   @updatedAt
+
+    sessions      Session[]
+
+    @@map("user")
+}
+
+
+model Session {
+  id           String   @default(uuid()) @id
+  userId       String
+  refreshToken String   @unique
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  lastUsedAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Verification {
+  id         String   @default(uuid()) @id
+  identifier String
+  value      String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
